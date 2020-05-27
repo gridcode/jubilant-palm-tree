@@ -8,8 +8,17 @@
     "start": "next start"
   },
   "dependencies": {
+    "bootstrap": "^4.5.0",
+    "formik": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.16",
     "next": "9.4.2",
+    "next-connect": "^0.6.6",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-bootstrap": "^1.0.1",
+    "react-dom": "16.13.1",
+    "shortid": "^2.2.15",
+    "validator": "^13.0.0",
+    "yup": "^0.29.0"
   }
 }
