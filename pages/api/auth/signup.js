@@ -5,6 +5,7 @@ import shortid from 'shortid'
 import User from 'models/User';
 export const config = {
   api: {
+    externalResolver: true,
     bodyParser: {
       sizeLimit: '1mb',
     },
