@@ -4,22 +4,23 @@ import connectDb from 'middleware/db'
 import shortid from 'shortid'
 import User from 'models/User';
 export const config = {
-  api: {
-    externalResolver: true,
+  api : {
     bodyParser: {
-      sizeLimit: '1mb',
-    },
-  },
-}
-
+      sizeLimit: '1mb'
+    }
+  }
+} 
 const handler = nextConnect();
 
 handler.use(useSignupValidator).post(async (req, res)=>{
   await connectDb();
   const {name, email, password} = req.body
-  User.findOne({email: email}).exec((err, user)=>{
+  User.findOne({email}).exec((err, user)=>{
     if(user){
-      return res.status(409).json({message:"Email is taken"})
+      return res.status(400).json({error:"Email is taken"})
+    }
+    if(err){
+      return res.status(500).json({error:"Error looking up email"})
     }
     let username = shortid.generate();
 
@@ -28,11 +29,12 @@ handler.use(useSignupValidator).post(async (req, res)=>{
     })
     newUser.save((err, success)=>{
       if(err){
+        console.error(err)
         return res.status(400).json({
           error: err
         })
       }
-      res.json({
+      return res.json({
         user: success,
         message: "Signup success"
       })

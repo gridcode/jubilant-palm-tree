@@ -19,6 +19,7 @@
     "react-bootstrap": "^1.0.1",
     "react-dom": "16.13.1",
     "shortid": "^2.2.15",
+    "swr": "^0.2.2",
     "validator": "^13.0.0",
     "yup": "^0.29.0"
   }

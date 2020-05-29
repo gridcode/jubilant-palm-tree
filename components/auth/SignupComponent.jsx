@@ -1,19 +1,35 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { signupValidator } from "validators/auth";
-import { FormLabel, FormGroup, Row, FormControl, Col, Button } from "react-bootstrap";
+import {
+  FormLabel,
+  FormGroup,
+  Row,
+  FormControl,
+  Col,
+  Button,
+} from "react-bootstrap";
 import { useState } from "react";
-import axios from 'axios'
 
 const SignupComponent = () => {
-  const [formResult, setFormResult] = useState("")
-    
+  const [formResult, setFormResult] = useState("");
   const signupForm = () => {
     const handleSubmit = async (values, { setSubmitting }) => {
-      axios.post("api/auth/signup",values,{headers:{"Content-type":"application/json"}})
-      .then(res=>setFormResult(res.data.message))
-      .catch(err=>setFormResult(err))
-      .finally(()=>setSubmitting(false))
-      values={ name: "", email: "", password: "" }
+      await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+        .then((r) => r.json())
+        .then((data) => {
+          if (data && data.error) {
+            setFormResult(data.error);
+          }
+          if (data && data.message) {
+            setFormResult(data.message);
+          }
+        });
     };
     return (
       <Formik
@@ -81,12 +97,18 @@ const SignupComponent = () => {
             </FormGroup>
             <Row>
               <Col md="auto" className="mr-auto px-0 offset-md-2">
-              <Button variant="primary" type="submit" disabled={isSubmitting}>Sign up</Button>
+                <Button variant="primary" type="submit" disabled={isSubmitting}>
+                  Sign up
+                </Button>
               </Col>
             </Row>
-            {formResult && <Row>
-              {JSON.stringify(formResult)}
-              </Row>}
+            {formResult && (
+              <Row>
+                <Col md="auto" className="mr-auto px-0 pt-2 offset-md-2">
+                  {formResult}
+                </Col>
+              </Row>
+            )}
           </Form>
         )}
       </Formik>
